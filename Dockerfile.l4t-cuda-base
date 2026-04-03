@@ -1,0 +1,27 @@
+ARG UBUNTU=22.04
+FROM ubuntu:${UBUNTU}
+
+ARG L4T_VERSION=r36.4
+ARG CUDA=12-6
+ARG CUDA_VERSION=12.6
+ARG REPO_BASE=https://repo.download.nvidia.com/jetson
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates curl gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL "${REPO_BASE}/jetson-ota-public.asc" | apt-key add - \
+    && echo "deb ${REPO_BASE}/common ${L4T_VERSION} main" \
+        > /etc/apt/sources.list.d/nvidia-l4t-common.list
+
+RUN mkdir -p /opt/nvidia/l4t-packages/ \
+    && touch /opt/nvidia/l4t-packages/.nv-l4t-disable-boot-fw-update-in-preinstall
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cuda-libraries-${CUDA} \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN echo "/usr/local/cuda-${CUDA_VERSION}/lib64" > /etc/ld.so.conf.d/cuda.conf \
+    && ldconfig
+
+ENV LD_LIBRARY_PATH=/usr/local/cuda-${CUDA_VERSION}/lib64

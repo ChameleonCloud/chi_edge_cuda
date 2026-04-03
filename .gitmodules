@@ -1,0 +1,3 @@
+[submodule "src/gpu-burn"]
+	path = src/gpu-burn
+	url = https://github.com/wilicc/gpu-burn

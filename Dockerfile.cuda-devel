@@ -1,0 +1,14 @@
+ARG BASE_IMAGE=ghcr.io/chameleoncloud/jetson-base:t234-r36.4
+FROM ${BASE_IMAGE}
+
+ARG CUDA=12-6
+ARG CUDA_VERSION=12.6
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cuda-nvcc-${CUDA} cuda-cudart-dev-${CUDA} libcublas-dev-${CUDA} \
+    make g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV CUDA_HOME=/usr/local/cuda-${CUDA_VERSION}
+ENV PATH="${CUDA_HOME}/bin:${PATH}"
+ENV LD_LIBRARY_PATH="${CUDA_HOME}/lib64"

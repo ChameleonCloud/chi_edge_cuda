@@ -1,12 +1,15 @@
-FROM nvcr.io/nvidia/l4t-cuda:12.2.12-devel AS build
+ARG CUDA_DEVEL=ghcr.io/chameleoncloud/cuda-devel:l4t-r36.4-cuda12.6
+FROM ${CUDA_DEVEL} AS build
 
-COPY src/gpu-burn gpu-burn
-WORKDIR /gpu-burn
-RUN make
+ARG COMPUTE
+ARG CUDA_VERSION=12.6
+COPY src/gpu-burn /src
+WORKDIR /src
+RUN make COMPUTE=${COMPUTE} IS_JETSON=true \
+    && mkdir -p /out && cp gpu_burn compare.ptx /out/
 
 FROM ubuntu:22.04
 WORKDIR /gpu-burn
-COPY --from=build /gpu-burn/compare.ptx .
-COPY --from=build /gpu-burn/gpu_burn .
-ENTRYPOINT ["./gpu_burn"]
-CMD ["10"]
+COPY --from=build /out/ ./
+ARG CUDA_VERSION
+ENV LD_LIBRARY_PATH=/usr/local/cuda-${CUDA_VERSION}/lib64

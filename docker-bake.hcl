@@ -138,7 +138,7 @@ target "gpu-burn-sm53" {
   platforms = ["linux/arm64"]
   args = {
     CUDA_DEVEL = "${REGISTRY}/l4t-cuda-devel:32.7-10.2"
-    CUDA_BASE  = "${REGISTRY}/l4t-cuda-base:32.7-10.2"
+    RUNTIME  = "Ubuntu:18.04"
     COMPUTE    = "53"
   }
   tags = ["${REGISTRY}/gpu-burn:sm53-nano"]
@@ -149,7 +149,7 @@ target "gpu-burn-sm72" {
   platforms = ["linux/arm64"]
   args = {
     CUDA_DEVEL = "${REGISTRY}/l4t-cuda-devel:32.7-10.2"
-    CUDA_BASE  = "${REGISTRY}/l4t-cuda-base:32.7-10.2"
+    RUNTIME  = "Ubuntu:18.04"
     COMPUTE    = "72"
   }
   tags = ["${REGISTRY}/gpu-burn:sm72-xavier"]
@@ -160,7 +160,7 @@ target "gpu-burn-sm87" {
   platforms = ["linux/arm64"]
   args = {
     CUDA_DEVEL = "${REGISTRY}/l4t-cuda-devel:36.4-12.6"
-    CUDA_BASE  = "${REGISTRY}/l4t-cuda-base:36.4-12.6"
+    RUNTIME  = "Ubuntu:22.04"
     COMPUTE    = "87"
   }
   tags = ["${REGISTRY}/gpu-burn:sm87-orin"]
